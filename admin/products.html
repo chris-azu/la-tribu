@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Products — La Tribu Admin</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍔</text></svg>">
+  <link rel="stylesheet" href="../css/global.css">
+  <link rel="stylesheet" href="../css/admin.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body style="background: var(--crema);">
+  <button class="admin-mobile-toggle" id="adminToggle" aria-label="Menu"><i class="fa-solid fa-bars"></i></button>
+  <div class="admin-layout">
+    <aside class="admin-sidebar" id="adminSidebar">
+      <div class="admin-sidebar-title">Dashboard</div>
+      <nav class="admin-nav">
+        <a href="index.html" class="admin-nav-item"><i class="fa-solid fa-table-cells-large"></i> Overview</a>
+        <a href="products.html" class="admin-nav-item active"><i class="fa-solid fa-utensils"></i> Products</a>
+        <a href="categories.html" class="admin-nav-item"><i class="fa-solid fa-house"></i> Categories</a>
+        <a href="conversions.html" class="admin-nav-item"><i class="fa-solid fa-circle"></i> 3D Conversions</a>
+        <a href="settings.html" class="admin-nav-item"><i class="fa-solid fa-gear"></i> Settings</a>
+      </nav>
+    </aside>
+    <main class="admin-main">
+      <div class="admin-header">
+        <h1 class="admin-header-title">Products</h1>
+        <button class="admin-add-btn">+ Add New Product</button>
+      </div>
+      <div class="admin-table-header">
+        <h2 class="admin-table-title">All Products</h2>
+        <input type="text" class="admin-search" placeholder="Search products...">
+      </div>
+      <table class="admin-table" id="adminProductsTable">
+        <thead>
+          <tr>
+            <th>Product Name</th>
+            <th>Price</th>
+            <th>Category</th>
+            <th>3D Status</th>
+            <th>Available</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="adminProductsBody"></tbody>
+      </table>
+    </main>
+  </div>
+  <script src="../data/products.js"></script>
+  <script>
+    var toggle = document.getElementById('adminToggle');
+    var sidebar = document.getElementById('adminSidebar');
+    if (toggle && sidebar) {
+      toggle.addEventListener('click', function() { sidebar.classList.toggle('open'); });
+      document.addEventListener('click', function(e) {
+        if (!sidebar.contains(e.target) && e.target !== toggle) sidebar.classList.remove('open');
+      });
+    }
+    document.addEventListener('DOMContentLoaded', function() {
+      var tbody = document.getElementById('adminProductsBody');
+      if (tbody && typeof PRODUCTS !== 'undefined') {
+        tbody.innerHTML = PRODUCTS.map(function(p) {
+          var status = p.model_glb ? 'badge-complete' : 'badge-pending';
+          var statusText = p.model_glb ? 'Complete' : 'Pending';
+          return '<tr>' +
+            '<td><div style="display:flex;align-items:center;gap:12px;">' +
+              '<img class="admin-table-thumb" src="../' + p.image + '" alt="' + p.name + '" onerror="this.style.display=\'none\'">' +
+              '<span class="admin-table-name">' + p.name + '</span>' +
+            '</div></td>' +
+            '<td class="admin-table-price">$' + p.price.toFixed(2) + '</td>' +
+            '<td>' + p.category + '</td>' +
+            '<td><span class="badge ' + status + '">' + statusText + '</span></td>' +
+            '<td>' + (p.available ? '<span style="color:#2d6a4f;">Yes</span>' : '<span style="color:#e63946;">No</span>') + '</td>' +
+            '<td><div class="admin-actions">' +
+              '<button class="admin-action-btn" title="Edit"><i class="fa-solid fa-pen"></i></button>' +
+              '<button class="admin-action-btn delete" title="Delete"><i class="fa-solid fa-trash"></i></button>' +
+            '</div></td>' +
+          '</tr>';
+        }).join('');
+      }
+    });
+  </script>
+</body>
+</html>

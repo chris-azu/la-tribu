@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Panel administrativo — La Tribu">
+  <title>Admin — La Tribu</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍔</text></svg>">
+  <link rel="stylesheet" href="../css/global.css">
+  <link rel="stylesheet" href="../css/admin.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body style="background: var(--crema);">
+
+  <!-- ADMIN MOBILE TOGGLE -->
+  <button class="admin-mobile-toggle" id="adminToggle" aria-label="Abrir menú">
+    <i class="fa-solid fa-bars"></i>
+  </button>
+
+  <div class="admin-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="admin-sidebar" id="adminSidebar">
+      <div class="admin-sidebar-title">Dashboard</div>
+      <nav class="admin-nav">
+        <a href="index.html" class="admin-nav-item active">
+          <i class="fa-solid fa-table-cells-large"></i> Overview
+        </a>
+        <a href="products.html" class="admin-nav-item">
+          <i class="fa-solid fa-utensils"></i> Products
+        </a>
+        <a href="categories.html" class="admin-nav-item">
+          <i class="fa-solid fa-house"></i> Categories
+        </a>
+        <a href="conversions.html" class="admin-nav-item">
+          <i class="fa-solid fa-circle"></i> 3D Conversions
+        </a>
+        <a href="settings.html" class="admin-nav-item">
+          <i class="fa-solid fa-gear"></i> Settings
+        </a>
+      </nav>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="admin-main">
+
+      <!-- Header -->
+      <div class="admin-header">
+        <h1 class="admin-header-title">La Tribu Admin</h1>
+        <button class="admin-add-btn" onclick="window.location.href='products.html'">+ Add New Product</button>
+      </div>
+
+      <!-- Stats -->
+      <div class="admin-stats">
+        <div class="admin-stat-card">
+          <p class="admin-stat-label">Orders Today</p>
+          <p class="admin-stat-value">142</p>
+          <p class="admin-stat-change positive">+12% vs yesterday</p>
+        </div>
+        <div class="admin-stat-card">
+          <p class="admin-stat-label">New Products</p>
+          <p class="admin-stat-value">8</p>
+          <p class="admin-stat-change neutral">3 featured</p>
+        </div>
+        <div class="admin-stat-card">
+          <p class="admin-stat-label">3D Models Pending</p>
+          <p class="admin-stat-value">3</p>
+          <p class="admin-stat-change neutral">In processing queue</p>
+        </div>
+      </div>
+
+      <!-- Recent Products Table -->
+      <div class="admin-table-header">
+        <h2 class="admin-table-title">Recent Products</h2>
+        <input type="text" class="admin-search" placeholder="&#128269; Search products...">
+      </div>
+
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Product Name</th>
+            <th>Price</th>
+            <th>Category</th>
+            <th>3D Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <div style="display:flex;align-items:center;gap:12px;">
+                <img class="admin-table-thumb" src="../assets/images/tacos.webp" alt="Tacos" onerror="this.style.display='none'">
+                <span class="admin-table-name">Al Pastor Taco</span>
+              </div>
+            </td>
+            <td class="admin-table-price">$4.50</td>
+            <td>Tacos</td>
+            <td><span class="badge badge-complete">Complete</span></td>
+            <td>
+              <div class="admin-actions">
+                <button class="admin-action-btn" title="Edit"><i class="fa-solid fa-pen"></i></button>
+                <button class="admin-action-btn delete" title="Delete"><i class="fa-solid fa-trash"></i></button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div style="display:flex;align-items:center;gap:12px;">
+                <img class="admin-table-thumb" src="../assets/images/guacamole.webp" alt="Guacamole" onerror="this.style.display='none'">
+                <span class="admin-table-name">Guacamole Bowl</span>
+              </div>
+            </td>
+            <td class="admin-table-price">$8.00</td>
+            <td>Sides</td>
+            <td><span class="badge badge-processing">Processing</span></td>
+            <td>
+              <div class="admin-actions">
+                <button class="admin-action-btn" title="Edit"><i class="fa-solid fa-pen"></i></button>
+                <button class="admin-action-btn delete" title="Delete"><i class="fa-solid fa-trash"></i></button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div style="display:flex;align-items:center;gap:12px;">
+                <img class="admin-table-thumb" src="../assets/images/horchata.webp" alt="Horchata" onerror="this.style.display='none'">
+                <span class="admin-table-name">Horchata</span>
+              </div>
+            </td>
+            <td class="admin-table-price">$3.50</td>
+            <td>Beverages</td>
+            <td><span class="badge badge-pending">Pending</span></td>
+            <td>
+              <div class="admin-actions">
+                <button class="admin-action-btn" title="Edit"><i class="fa-solid fa-pen"></i></button>
+                <button class="admin-action-btn delete" title="Delete"><i class="fa-solid fa-trash"></i></button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+    </main>
+  </div>
+
+  <script>
+    // Admin sidebar toggle (mobile)
+    var toggle = document.getElementById('adminToggle');
+    var sidebar = document.getElementById('adminSidebar');
+
+    if (toggle && sidebar) {
+      toggle.addEventListener('click', function() {
+        sidebar.classList.toggle('open');
+      });
+
+      document.addEventListener('click', function(e) {
+        if (!sidebar.contains(e.target) && e.target !== toggle && !toggle.contains(e.target)) {
+          sidebar.classList.remove('open');
+        }
+      });
+    }
+  </script>
+</body>
+</html>

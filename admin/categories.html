@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Categories — La Tribu Admin</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍔</text></svg>">
+  <link rel="stylesheet" href="../css/global.css">
+  <link rel="stylesheet" href="../css/admin.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body style="background: var(--crema);">
+  <button class="admin-mobile-toggle" id="adminToggle" aria-label="Menu"><i class="fa-solid fa-bars"></i></button>
+  <div class="admin-layout">
+    <aside class="admin-sidebar" id="adminSidebar">
+      <div class="admin-sidebar-title">Dashboard</div>
+      <nav class="admin-nav">
+        <a href="index.html" class="admin-nav-item"><i class="fa-solid fa-table-cells-large"></i> Overview</a>
+        <a href="products.html" class="admin-nav-item"><i class="fa-solid fa-utensils"></i> Products</a>
+        <a href="categories.html" class="admin-nav-item active"><i class="fa-solid fa-house"></i> Categories</a>
+        <a href="conversions.html" class="admin-nav-item"><i class="fa-solid fa-circle"></i> 3D Conversions</a>
+        <a href="settings.html" class="admin-nav-item"><i class="fa-solid fa-gear"></i> Settings</a>
+      </nav>
+    </aside>
+    <main class="admin-main">
+      <div class="admin-header">
+        <h1 class="admin-header-title">Categories</h1>
+        <button class="admin-add-btn">+ Add Category</button>
+      </div>
+      <table class="admin-table">
+        <thead>
+          <tr><th>Name</th><th>Slug</th><th>Products</th><th>Status</th><th>Actions</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="admin-table-name">Comida</td><td>comida</td><td>3</td><td><span class="badge badge-complete">Active</span></td><td><div class="admin-actions"><button class="admin-action-btn"><i class="fa-solid fa-pen"></i></button><button class="admin-action-btn delete"><i class="fa-solid fa-trash"></i></button></div></td></tr>
+          <tr><td class="admin-table-name">Snacks</td><td>snacks</td><td>3</td><td><span class="badge badge-complete">Active</span></td><td><div class="admin-actions"><button class="admin-action-btn"><i class="fa-solid fa-pen"></i></button><button class="admin-action-btn delete"><i class="fa-solid fa-trash"></i></button></div></td></tr>
+          <tr><td class="admin-table-name">Bebidas</td><td>bebidas</td><td>2</td><td><span class="badge badge-complete">Active</span></td><td><div class="admin-actions"><button class="admin-action-btn"><i class="fa-solid fa-pen"></i></button><button class="admin-action-btn delete"><i class="fa-solid fa-trash"></i></button></div></td></tr>
+          <tr><td class="admin-table-name">Postres</td><td>postres</td><td>1</td><td><span class="badge badge-complete">Active</span></td><td><div class="admin-actions"><button class="admin-action-btn"><i class="fa-solid fa-pen"></i></button><button class="admin-action-btn delete"><i class="fa-solid fa-trash"></i></button></div></td></tr>
+        </tbody>
+      </table>
+    </main>
+  </div>
+  <script>
+    var toggle = document.getElementById('adminToggle');
+    var sidebar = document.getElementById('adminSidebar');
+    if (toggle && sidebar) {
+      toggle.addEventListener('click', function() { sidebar.classList.toggle('open'); });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,89 @@
+/* ============================================
+   LA TRIBU — Animations
+   Subtle, editorial, no excess
+   ============================================ */
+
+/* ---- Fade In Up ---- */
+.fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ---- Fade In ---- */
+.fade-in-only {
+  opacity: 0;
+  transition: opacity 0.7s ease;
+}
+
+.fade-in-only.visible {
+  opacity: 1;
+}
+
+/* ---- Stagger children ---- */
+.stagger > * {
+  opacity: 0;
+  transform: translateY(15px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.stagger.visible > *:nth-child(1) { transition-delay: 0ms; opacity: 1; transform: translateY(0); }
+.stagger.visible > *:nth-child(2) { transition-delay: 80ms; opacity: 1; transform: translateY(0); }
+.stagger.visible > *:nth-child(3) { transition-delay: 160ms; opacity: 1; transform: translateY(0); }
+.stagger.visible > *:nth-child(4) { transition-delay: 240ms; opacity: 1; transform: translateY(0); }
+.stagger.visible > *:nth-child(5) { transition-delay: 320ms; opacity: 1; transform: translateY(0); }
+.stagger.visible > *:nth-child(6) { transition-delay: 400ms; opacity: 1; transform: translateY(0); }
+
+/* ---- Image hover ---- */
+.img-hover {
+  transition: transform var(--transition-slow);
+}
+
+.img-hover:hover {
+  transform: scale(1.02);
+}
+
+/* ---- Link underline ---- */
+.link-underline {
+  position: relative;
+  display: inline-block;
+}
+
+.link-underline::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: currentColor;
+  transition: width var(--transition-base);
+}
+
+.link-underline:hover::after {
+  width: 100%;
+}
+
+/* ---- Button subtle press ---- */
+.btn-press:active {
+  transform: scale(0.98);
+}
+
+/* ---- Mobile nav slide ---- */
+.mobile-nav-links a {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.4s ease, transform 0.4s ease, color 0.2s ease;
+}
+
+.mobile-nav.open .mobile-nav-links a:nth-child(1) { transition-delay: 100ms; opacity: 1; transform: translateY(0); }
+.mobile-nav.open .mobile-nav-links a:nth-child(2) { transition-delay: 170ms; opacity: 1; transform: translateY(0); }
+.mobile-nav.open .mobile-nav-links a:nth-child(3) { transition-delay: 240ms; opacity: 1; transform: translateY(0); }
+.mobile-nav.open .mobile-nav-links a:nth-child(4) { transition-delay: 310ms; opacity: 1; transform: translateY(0); }
+.mobile-nav.open .mobile-nav-links a:nth-child(5) { transition-delay: 380ms; opacity: 1; transform: translateY(0); }
+.mobile-nav.open .mobile-nav-links a:nth-child(6) { transition-delay: 450ms; opacity: 1; transform: translateY(0); }

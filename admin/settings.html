@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Settings — La Tribu Admin</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍔</text></svg>">
+  <link rel="stylesheet" href="../css/global.css">
+  <link rel="stylesheet" href="../css/admin.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body style="background: var(--crema);">
+  <button class="admin-mobile-toggle" id="adminToggle" aria-label="Menu"><i class="fa-solid fa-bars"></i></button>
+  <div class="admin-layout">
+    <aside class="admin-sidebar" id="adminSidebar">
+      <div class="admin-sidebar-title">Dashboard</div>
+      <nav class="admin-nav">
+        <a href="index.html" class="admin-nav-item"><i class="fa-solid fa-table-cells-large"></i> Overview</a>
+        <a href="products.html" class="admin-nav-item"><i class="fa-solid fa-utensils"></i> Products</a>
+        <a href="categories.html" class="admin-nav-item"><i class="fa-solid fa-house"></i> Categories</a>
+        <a href="conversions.html" class="admin-nav-item"><i class="fa-solid fa-circle"></i> 3D Conversions</a>
+        <a href="settings.html" class="admin-nav-item active"><i class="fa-solid fa-gear"></i> Settings</a>
+      </nav>
+    </aside>
+    <main class="admin-main">
+      <div class="admin-header">
+        <h1 class="admin-header-title">Settings</h1>
+      </div>
+      <form id="settingsForm" style="max-width:600px;">
+        <div style="margin-bottom:24px;">
+          <label style="display:block;font-size:0.7rem;text-transform:uppercase;letter-spacing:0.12em;margin-bottom:8px;font-weight:600;">Restaurant Name</label>
+          <input type="text" value="La Tribu" style="width:100%;padding:10px 14px;border:1px solid var(--borde);background:var(--blanco);font-size:0.9rem;">
+        </div>
+        <div style="margin-bottom:24px;">
+          <label style="display:block;font-size:0.7rem;text-transform:uppercase;letter-spacing:0.12em;margin-bottom:8px;font-weight:600;">WhatsApp Number</label>
+          <input type="text" value="5491123456789" style="width:100%;padding:10px 14px;border:1px solid var(--borde);background:var(--blanco);font-size:0.9rem;">
+        </div>
+        <div style="margin-bottom:24px;">
+          <label style="display:block;font-size:0.7rem;text-transform:uppercase;letter-spacing:0.12em;margin-bottom:8px;font-weight:600;">Address</label>
+          <input type="text" value="Av. Corrientes 1234, Barrio Norte" style="width:100%;padding:10px 14px;border:1px solid var(--borde);background:var(--blanco);font-size:0.9rem;">
+        </div>
+        <div style="margin-bottom:24px;">
+          <label style="display:block;font-size:0.7rem;text-transform:uppercase;letter-spacing:0.12em;margin-bottom:8px;font-weight:600;">Hours</label>
+          <input type="text" value="Mar - Dom: 19:00 - 01:00" style="width:100%;padding:10px 14px;border:1px solid var(--borde);background:var(--blanco);font-size:0.9rem;">
+        </div>
+        <div style="margin-bottom:24px;">
+          <label style="display:block;font-size:0.7rem;text-transform:uppercase;letter-spacing:0.12em;margin-bottom:8px;font-weight:600;">Instagram</label>
+          <input type="text" value="https://instagram.com/latribu" style="width:100%;padding:10px 14px;border:1px solid var(--borde);background:var(--blanco);font-size:0.9rem;">
+        </div>
+        <div style="margin-bottom:24px;">
+          <label style="display:block;font-size:0.7rem;text-transform:uppercase;letter-spacing:0.12em;margin-bottom:8px;font-weight:600;">Facebook</label>
+          <input type="text" value="https://facebook.com/latribu" style="width:100%;padding:10px 14px;border:1px solid var(--borde);background:var(--blanco);font-size:0.9rem;">
+        </div>
+        <button type="submit" class="admin-add-btn" style="margin-top:10px;">Save Settings</button>
+      </form>
+    </main>
+  </div>
+  <script>
+    var toggle = document.getElementById('adminToggle');
+    var sidebar = document.getElementById('adminSidebar');
+    if (toggle && sidebar) {
+      toggle.addEventListener('click', function() { sidebar.classList.toggle('open'); });
+    }
+  </script>
+</body>
+</html>

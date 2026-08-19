@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="La Tribu — Experiencia culinaria exclusiva. Fast food premium con realidad aumentada.">
+  <meta property="og:title" content="La Tribu — Experiencia Culinaria Exclusiva">
+  <meta property="og:description" content="Donde la pasión por la alta cocina se encuentra con la rebelión gastronómica.">
+  <meta property="og:type" content="website">
+  <title>La Tribu — Experiencia Culinaria Exclusiva</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍔</text></svg>">
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <link rel="stylesheet" href="css/viewer3d.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+</head>
+<body>
+
+  <!-- MOBILE HEADER -->
+  <header class="mobile-header" id="mobileHeader">
+    <div class="hamburger" id="hamburger" aria-label="Abrir menú">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <a href="index.html" class="mobile-logo">La Tribu</a>
+    <div class="close-btn" id="closeBtn" aria-label="Cerrar menú">&times;</div>
+  </header>
+
+  <!-- MOBILE NAV -->
+  <nav class="mobile-nav" id="mobileNav" aria-label="Navegación principal">
+    <div class="mobile-nav-links">
+      <a href="index.html" class="active">Home</a>
+      <a href="pages/comida.html">Food</a>
+      <a href="pages/nosotros.html">About Us</a>
+      <a href="pages/galeria.html">Gallery</a>
+      <a href="pages/contacto.html">Contact</a>
+    </div>
+  </nav>
+
+  <!-- DESKTOP SIDEBAR -->
+  <aside class="desktop-sidebar">
+    <div class="sidebar-logo">La<br>Tribu</div>
+    <nav class="sidebar-nav">
+      <a href="index.html" class="active">Home</a>
+      <a href="pages/comida.html">Food</a>
+      <a href="pages/nosotros.html">About Us</a>
+      <a href="pages/galeria.html">Gallery</a>
+      <a href="pages/contacto.html">Contact</a>
+    </nav>
+  </aside>
+
+  <!-- PAGE WRAPPER -->
+  <div class="page-wrapper sidebar-active">
+
+    <!-- HERO -->
+    <section class="hero" id="hero">
+      <div class="hero-logo fade-in">La Tribu</div>
+      <p class="hero-tagline fade-in">Experiencia Culinaria Exclusiva</p>
+      <p class="hero-description fade-in">
+        Donde la pasión por la alta cocina se encuentra con la rebelión gastronómica.
+        Fast food premium con una dimensión que nunca viste.
+      </p>
+      <div class="hero-buttons fade-in">
+        <a href="pages/comida.html" class="btn btn-primary btn-press">Ver Menú</a>
+        <a href="https://wa.me/5491123456789?text=Hola,%20quiero%20hacer%20un%20pedido" target="_blank" rel="noopener" class="btn btn-outline btn-press">Pedir por WhatsApp</a>
+      </div>
+      <div class="hero-line fade-in"></div>
+    </section>
+
+    <!-- FEATURED PRODUCTS -->
+    <section class="section" id="featured">
+      <div class="container">
+        <div class="section-header fade-in">
+          <h2 class="section-title">Destacados</h2>
+          <p class="section-subtitle">Nuestros platos más celebrados, elegidos por nuestra tribu.</p>
+        </div>
+        <div class="products-grid stagger" id="featuredProducts">
+          <!-- Loaded dynamically -->
+        </div>
+      </div>
+    </section>
+
+    <!-- CATEGORIES -->
+    <section class="section" id="categories" style="background: var(--crema-sec);">
+      <div class="container">
+        <div class="section-header fade-in">
+          <h2 class="section-title">Explora</h2>
+          <p class="section-subtitle">Encuentra tu próxima obsesión culinaria.</p>
+        </div>
+        <div class="categories-grid stagger" id="homeCategories">
+          <!-- Loaded dynamically -->
+        </div>
+      </div>
+    </section>
+
+    <!-- 3D PREVIEW -->
+    <section class="section preview-3d-section" id="preview3d">
+      <div class="container">
+        <div class="section-header fade-in">
+          <h2 class="section-title">La Experiencia</h2>
+          <p class="section-subtitle">Visualiza nuestros platos en tres dimensiones antes de pedirlos.</p>
+        </div>
+        <div class="viewer-3d-container fade-in" id="homeViewer">
+          <div class="viewer-poster" id="homeViewerPoster">
+            <div class="viewer-poster-icon">&#9673;</div>
+            <span class="viewer-poster-text">Toca para explorar en 3D</span>
+          </div>
+          <model-viewer
+            id="homeModelViewer"
+            alt="Modelo 3D de la experiencia La Tribu"
+            camera-controls
+            auto-rotate
+            auto-rotate-delay="2000"
+            rotation-per-second="25deg"
+            shadow-intensity="0.6"
+            shadow-softness="0.4"
+            environment-image="neutral"
+            touch-action="pan-y"
+            loading="lazy"
+            style="width:100%;height:100%;background:transparent;"
+            ar
+            ar-modes="webxr scene-viewer quick-look"
+          ></model-viewer>
+          <div class="viewer-loading hidden" id="homeViewerLoading">
+            <div class="viewer-spinner"></div>
+          </div>
+        </div>
+        <p style="margin-top:16px;font-size:0.75rem;color:var(--texto-sec);letter-spacing:0.1em;text-transform:uppercase;" class="fade-in">
+          Compatible con Realidad Aumentada en dispositivos móviles
+        </p>
+      </div>
+    </section>
+
+    <!-- ABOUT PREVIEW -->
+    <section class="section" id="aboutPreview">
+      <div class="container">
+        <div class="about-preview fade-in">
+          <p class="about-preview-text">
+            "Creemos en la belleza del vacío. En nuestra mesa, el espacio en blanco es tan importante como el ingrediente principal."
+          </p>
+          <div class="about-preview-link">
+            <a href="pages/nosotros.html" class="link-editorial link-underline">Nuestra Historia &rarr;</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- GALLERY PREVIEW -->
+    <section class="section" id="galleryPreview" style="background: var(--crema-sec);">
+      <div class="container">
+        <div class="section-header fade-in">
+          <h2 class="section-title">Galería</h2>
+          <p class="section-subtitle">Una mirada íntima a nuestra experiencia culinaria.</p>
+        </div>
+        <div class="gallery-preview stagger" id="homeGallery">
+          <div class="gallery-preview-item">
+            <img src="assets/images/gallery-1.webp" alt="Interior del restaurante" loading="lazy">
+          </div>
+          <div class="gallery-preview-item">
+            <img src="assets/images/gallery-2.webp" alt="Plato signature" loading="lazy">
+          </div>
+          <div class="gallery-preview-item">
+            <img src="assets/images/gallery-3.webp" alt="Barra de coctelería" loading="lazy">
+          </div>
+        </div>
+        <div style="text-align:center;margin-top:40px;" class="fade-in">
+          <a href="pages/galeria.html" class="link-editorial link-underline">Ver Galería Completa &rarr;</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT PREVIEW -->
+    <section class="section" id="contactPreview">
+      <div class="container">
+        <div class="section-header fade-in">
+          <h2 class="section-title">Contacto</h2>
+        </div>
+        <div class="contact-block fade-in">
+          <div class="contact-icon">
+            <i class="fa-solid fa-location-dot"></i>
+          </div>
+          <p class="contact-label">Dirección</p>
+          <p class="contact-text">Av. Corrientes 1234, Barrio Norte<br>Buenos Aires, Argentina</p>
+        </div>
+        <div class="contact-block fade-in">
+          <div class="contact-icon">
+            <i class="fa-regular fa-clock"></i>
+          </div>
+          <p class="contact-label">Horario</p>
+          <p class="contact-text">Mar - Dom: 19:00 - 01:00<br>Lunes: Cerrado</p>
+        </div>
+        <div class="fade-in" style="display:flex;flex-direction:column;gap:14px;max-width:400px;margin:30px auto 0;">
+          <a href="https://wa.me/5491123456789" target="_blank" rel="noopener" class="btn btn-primary btn-full btn-press">
+            <i class="fa-brands fa-whatsapp"></i> Reservar por WhatsApp
+          </a>
+          <a href="https://maps.google.com" target="_blank" rel="noopener" class="btn btn-outline btn-full btn-press">
+            <i class="fa-solid fa-map-location-dot"></i> Cómo Llegar
+          </a>
+        </div>
+        <hr class="divider" style="margin:40px auto;max-width:200px;">
+        <div class="social-links fade-in">
+          <a href="https://instagram.com/latribu" target="_blank" rel="noopener">Instagram</a>
+          <a href="https://facebook.com/latribu" target="_blank" rel="noopener">Facebook</a>
+        </div>
+        <div class="map-block fade-in">
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3284!2d-58.3816!3d-34.5996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDTCsDM1JzU4LjYiUyA1OMKwMjInNTMuNyJX!5e0!3m2!1ses!2sar!4v1" allowfullscreen="" loading="lazy" title="Ubicación de La Tribu"></iframe>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+      <div class="footer-logo">La Tribu</div>
+      <nav class="footer-nav">
+        <a href="index.html">Home</a>
+        <a href="pages/comida.html">Food</a>
+        <a href="pages/nosotros.html">About Us</a>
+        <a href="pages/galeria.html">Gallery</a>
+        <a href="pages/contacto.html">Contact</a>
+        <a href="https://wa.me/5491123456789" target="_blank" rel="noopener">WhatsApp</a>
+      </nav>
+      <p class="footer-copy">&copy; 2024 La Tribu. Exclusive Culinary Experience.</p>
+    </footer>
+
+  </div><!-- /page-wrapper -->
+
+  <!-- MOBILE BOTTOM BAR -->
+  <div class="mobile-bottom-bar">
+    <div class="mobile-bottom-bar-left">
+      <button aria-label="Carrito">
+        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <path d="M16 10a4 4 0 01-8 0"/>
+        </svg>
+      </button>
+    </div>
+    <div class="mobile-bottom-bar-right">
+      <a href="https://wa.me/5491123456789" target="_blank" rel="noopener" aria-label="WhatsApp">
+        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-label="Visor de imagen">
+    <div class="lightbox-close" id="lightboxClose" aria-label="Cerrar">&times;</div>
+    <div class="lightbox-nav lightbox-prev" id="lightboxPrev" aria-label="Anterior">&#8249;</div>
+    <img class="lightbox-img" id="lightboxImg" src="" alt="">
+    <div class="lightbox-nav lightbox-next" id="lightboxNext" aria-label="Siguiente">&#8250;</div>
+  </div>
+
+  <!-- SCRIPTS -->
+  <script src="data/config.js"></script>
+  <script src="data/products.js"></script>
+  <script src="js/navigation.js"></script>
+  <script src="js/whatsapp.js"></script>
+  <script src="js/animations.js"></script>
+  <script src="js/gallery.js"></script>
+  <script src="js/viewer3d.js"></script>
+  <script src="js/arService.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

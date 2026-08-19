@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Sobre nosotros — La Tribu. Nuestra historia, filosofía y experiencia culinaria.">
+  <title>About Us — La Tribu</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍔</text></svg>">
+  <link rel="stylesheet" href="../css/global.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/animations.css">
+  <link rel="stylesheet" href="../css/responsive.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+
+  <!-- MOBILE HEADER -->
+  <header class="mobile-header">
+    <div class="hamburger" id="hamburger" aria-label="Abrir menú">
+      <span></span><span></span><span></span>
+    </div>
+    <a href="../index.html" class="mobile-logo">La Tribu</a>
+    <div class="close-btn" id="closeBtn">&times;</div>
+  </header>
+
+  <!-- MOBILE NAV -->
+  <nav class="mobile-nav" id="mobileNav">
+    <div class="mobile-nav-links">
+      <a href="../index.html">Home</a>
+      <a href="comida.html">Food</a>
+      <a href="nosotros.html" class="active">About Us</a>
+      <a href="galeria.html">Gallery</a>
+      <a href="contacto.html">Contact</a>
+    </div>
+  </nav>
+
+  <!-- DESKTOP SIDEBAR -->
+  <aside class="desktop-sidebar">
+    <div class="sidebar-logo">La<br>Tribu</div>
+    <nav class="sidebar-nav">
+      <a href="../index.html">Home</a>
+      <a href="comida.html">Food</a>
+      <a href="nosotros.html" class="active">About Us</a>
+      <a href="galeria.html">Gallery</a>
+      <a href="contacto.html">Contact</a>
+    </nav>
+  </aside>
+
+  <div class="page-wrapper sidebar-active">
+
+    <!-- ABOUT HERO -->
+    <section class="about-hero">
+      <img class="about-hero-bg" src="../assets/images/about-bg.webp" alt="" aria-hidden="true">
+      <div class="about-hero-content fade-in">
+        <h1 class="about-hero-title">
+          <span>Nuestra</span>
+          <span class="terracota">Historia</span>
+        </h1>
+        <div class="about-hero-line"></div>
+        <p class="about-hero-text">
+          Fundada en el caos y la pasión de la alta cocina. No servimos comida,
+          curamos experiencias crudas y memorables en un ambiente de sofisticación rebelde.
+        </p>
+      </div>
+    </section>
+
+    <!-- FILOSOFÍA VISUAL -->
+    <section class="section" style="padding-top: 60px;">
+      <div class="container">
+        <div class="about-philosophy fade-in">
+          <img class="about-philosophy-img" src="../assets/images/about-philosophy.webp" alt="Filosofía visual de La Tribu">
+          <div class="about-philosophy-label">Filosofía<br>Visual</div>
+        </div>
+        <p class="about-philosophy-text fade-in">
+          Creemos en la belleza del vacío.<br>
+          En nuestra mesa, el espacio en blanco es tan<br>
+          importante como el ingrediente principal.
+        </p>
+      </div>
+    </section>
+
+    <!-- LA EXPERIENCIA -->
+    <section class="section about-experience">
+      <div class="container">
+        <div class="about-experience-grid">
+          <div class="fade-in">
+            <h2 class="about-experience-title">La<br>Experiencia</h2>
+            <hr class="divider" style="width:40px;margin:20px 0;background:var(--terracota);border:none;height:2px;">
+            <p class="about-experience-desc">
+              Cruzar nuestras puertas es dejar el mundo exterior atrás. Iluminación
+              íntima, texturas crudas y una banda sonora curada que late con el ritmo
+              de la cocina.
+            </p>
+            <div class="about-list">
+              <div class="about-list-item">Ingredientes Salvajes</div>
+              <div class="about-list-item">Técnicas Ancestrales</div>
+              <div class="about-list-item">Servicio Invisible</div>
+            </div>
+          </div>
+          <div class="fade-in">
+            <img class="about-experience-img" src="../assets/images/about-experience.webp" alt="La experiencia La Tribu">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="section-lg" style="text-align:center;">
+      <div class="container">
+        <h2 class="section-title fade-in" style="margin-bottom:30px;">Viví la Experiencia</h2>
+        <div class="fade-in" style="display:flex;flex-direction:column;gap:14px;max-width:360px;margin:0 auto;">
+          <a href="comida.html" class="btn btn-primary btn-full btn-press">Ver Menú</a>
+          <a href="https://wa.me/5491123456789" target="_blank" rel="noopener" class="btn btn-outline btn-full btn-press">Reservar por WhatsApp</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+      <div class="footer-logo">La Tribu</div>
+      <nav class="footer-nav">
+        <a href="../index.html">Home</a>
+        <a href="comida.html">Food</a>
+        <a href="nosotros.html">About Us</a>
+        <a href="galeria.html">Gallery</a>
+        <a href="contacto.html">Contact</a>
+      </nav>
+      <p class="footer-copy">&copy; 2024 La Tribu. Exclusive Culinary Experience.</p>
+    </footer>
+
+  </div>
+
+  <!-- MOBILE BOTTOM BAR -->
+  <div class="mobile-bottom-bar">
+    <div class="mobile-bottom-bar-left">
+      <button aria-label="Carrito">
+        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+      </button>
+    </div>
+    <div class="mobile-bottom-bar-right">
+      <a href="https://wa.me/5491123456789" target="_blank" rel="noopener" aria-label="WhatsApp">
+        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+      </a>
+    </div>
+  </div>
+
+  <script src="../js/navigation.js"></script>
+  <script src="../js/animations.js"></script>
+</body>
+</html>
