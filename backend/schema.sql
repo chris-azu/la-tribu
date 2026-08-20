@@ -38,8 +38,12 @@ CREATE TABLE IF NOT EXISTS productos (
   imagen VARCHAR(255),
   modelo_glb VARCHAR(255),
   modelo_usdz VARCHAR(255),
+  modelo_status ENUM('pendiente','procesando','optimizando','completado','error') DEFAULT NULL,
+  modelo_job_id VARCHAR(255) DEFAULT NULL,
+  modelo_provider VARCHAR(50) DEFAULT NULL,
   disponible BOOLEAN DEFAULT TRUE,
   destacado BOOLEAN DEFAULT FALSE,
+  deleted_at TIMESTAMP NULL DEFAULT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (categoria_id) REFERENCES categorias(id) ON DELETE SET NULL
 ) ENGINE=InnoDB;

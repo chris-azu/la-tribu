@@ -61,13 +61,28 @@
         <h1 class="product-detail-name fade-in" id="productName">—</h1>
         <p class="product-detail-desc fade-in" id="productDesc"></p>
         <div class="product-detail-price fade-in" id="productPrice"></div>
+
+        <!-- AR Instructions (shown when AR is available) -->
+        <p class="ar-instructions" id="arInstructions" style="display:none;font-size:0.75rem;color:var(--texto-sec);margin-bottom:16px;font-style:italic;"></p>
+
         <div class="product-detail-buttons fade-in">
-          <button class="btn btn-primary btn-full btn-lg btn-press" id="btnView3D" onclick="toggleViewer3D()">
+          <!-- 3D Button: visible when model_glb exists -->
+          <button class="btn btn-primary btn-full btn-lg btn-press" id="btnView3D" style="display:none;" onclick="toggleViewer3D()">
             <i class="fa-solid fa-cube"></i> Ver en 3D
           </button>
-          <button class="btn btn-primary btn-full btn-lg btn-press" id="btnAR" onclick="openAR()" style="display:none;">
+
+          <!-- AR Button: visible when device supports AR + model exists -->
+          <button class="btn btn-primary btn-full btn-lg btn-press" id="btnAR" style="display:none;" onclick="openAR()">
             <i class="fa-solid fa-vr-cardboard"></i> Ver en mi Espacio
           </button>
+
+          <!-- No Model: visible when no 3D model exists -->
+          <div class="no-model-notice" id="btnNoModel" style="display:none;">
+            <i class="fa-solid fa-circle-info"></i>
+            <span>Modelo 3D no disponible para este plato.</span>
+          </div>
+
+          <!-- WhatsApp: always visible -->
           <a href="#" class="btn btn-outline btn-full btn-lg btn-press" id="btnWhatsApp" target="_blank" rel="noopener">
             <i class="fa-brands fa-whatsapp"></i> Pedir por WhatsApp
           </a>
@@ -78,7 +93,7 @@
       <div class="product-detail-image-wrapper" id="productImageWrapper">
         <img class="product-detail-image" id="productImage" src="" alt="">
 
-        <!-- 3D Viewer overlay -->
+        <!-- 3D Viewer (hidden by default) -->
         <div class="viewer-3d-container" id="productViewer" style="display:none;position:absolute;inset:0;width:100%;height:100%;max-width:none;border:none;">
           <model-viewer
             id="productModelViewer"
@@ -96,15 +111,20 @@
             ar-modes="webxr scene-viewer quick-look"
             style="width:100%;height:100%;background:var(--crema);"
           ></model-viewer>
-          <div class="viewer-loading hidden" id="productViewerLoading">
-            <div class="viewer-spinner"></div>
+
+          <!-- Loading overlay -->
+          <div class="viewer-loading" id="productViewerLoading">
+            <div class="viewer-loading-content">
+              <div class="viewer-spinner"></div>
+              <span class="viewer-loading-text">Cargando modelo 3D...</span>
+            </div>
           </div>
         </div>
       </div>
 
     </div>
 
-    <!-- AR CONTROLS -->
+    <!-- 3D CONTROLS (floating) -->
     <div class="ar-controls" id="arControls" style="display:none;">
       <button class="ar-control-btn" onclick="resetViewer()" title="Restablecer vista">
         <i class="fa-solid fa-rotate-right"></i>
@@ -179,123 +199,41 @@
   <script src="../js/navigation.js"></script>
   <script src="../js/whatsapp.js"></script>
   <script src="../js/animations.js"></script>
-  <script src="../js/viewer3d.js"></script>
   <script src="../js/arService.js"></script>
+  <script src="../js/viewer3d.js"></script>
   <script>
-    let currentProduct = null;
-
     document.addEventListener('DOMContentLoaded', function() {
-      const params = new URLSearchParams(window.location.search);
-      const id = parseInt(params.get('id'));
-      currentProduct = PRODUCTS.find(p => p.id === id);
+      var params = new URLSearchParams(window.location.search);
+      var id = parseInt(params.get('id'));
+      var product = PRODUCTS.find(function(p) { return p.id === id; });
 
-      if (!currentProduct) {
+      if (!product) {
         window.location.href = 'comida.html';
         return;
       }
 
-      document.title = currentProduct.name + ' — La Tribu';
-      document.getElementById('productName').textContent = currentProduct.name;
-      document.getElementById('productDesc').textContent = currentProduct.description;
-      document.getElementById('productPrice').textContent = '$' + currentProduct.price.toFixed(2) + ' USD';
-      document.getElementById('productImage').src = '../' + currentProduct.image;
-      document.getElementById('productImage').alt = currentProduct.name;
-      document.getElementById('fullscreenTitle').textContent = currentProduct.name;
+      // Populate product info
+      document.title = product.name + ' — La Tribu';
+      document.getElementById('productName').textContent = product.name;
+      document.getElementById('productDesc').textContent = product.description;
+      document.getElementById('productPrice').textContent = '$' + product.price.toFixed(2) + ' USD';
+      document.getElementById('productImage').src = '../' + product.image;
+      document.getElementById('productImage').alt = product.name;
+      document.getElementById('fullscreenTitle').textContent = product.name;
 
-      // WhatsApp link
-      const waBtn = document.getElementById('btnWhatsApp');
-      waBtn.href = generateWhatsAppLink(currentProduct.name, currentProduct.price);
+      // WhatsApp
+      document.getElementById('btnWhatsApp').href = generateWhatsAppLink(product.name, product.price);
 
-      // 3D viewer availability
-      if (currentProduct.model_glb) {
-        document.getElementById('btnView3D').style.display = '';
-      } else {
-        document.getElementById('btnView3D').style.display = 'none';
-      }
+      // Initialize 3D viewer
+      Viewer3D.init(product);
 
-      // AR capability
-      const arCap = ARService.detect();
-      if (arCap.supported && currentProduct.model_glb) {
-        document.getElementById('btnAR').style.display = '';
-        if (currentProduct.model_usdz && arCap.quickLook) {
-          document.getElementById('btnAR').innerHTML = '<i class="fa-solid fa-vr-cardboard"></i> Ver en mi Espacio';
-        } else if (currentProduct.model_glb && arCap.sceneViewer) {
-          document.getElementById('btnAR').innerHTML = '<i class="fa-solid fa-vr-cardboard"></i> Ver en mi Espacio';
-        }
+      // AR instructions
+      var arInstructions = document.getElementById('arInstructions');
+      if (ARService.isAvailable(product)) {
+        arInstructions.style.display = '';
+        arInstructions.textContent = ARService.getInstructions();
       }
     });
-
-    function toggleViewer3D() {
-      const img = document.getElementById('productImage');
-      const viewer = document.getElementById('productViewer');
-      const controls = document.getElementById('arControls');
-      const modelViewer = document.getElementById('productModelViewer');
-      const loading = document.getElementById('productViewerLoading');
-
-      if (viewer.style.display === 'none') {
-        img.style.display = 'none';
-        viewer.style.display = '';
-        controls.style.display = '';
-        loading.classList.remove('hidden');
-
-        if (currentProduct.model_glb) {
-          modelViewer.src = '../' + currentProduct.model_glb;
-          if (currentProduct.model_usdz) {
-            modelViewer.setAttribute('ios-src', '../' + currentProduct.model_usdz);
-          }
-        }
-
-        modelViewer.addEventListener('load', function onLoad() {
-          loading.classList.add('hidden');
-          modelViewer.removeEventListener('load', onLoad);
-        });
-      } else {
-        img.style.display = '';
-        viewer.style.display = 'none';
-        controls.style.display = 'none';
-      }
-    }
-
-    function openAR() {
-      ARService.openAR({
-        model_glb: currentProduct.model_glb ? window.location.origin + '/uploads/models/' + currentProduct.model_glb.replace('assets/models/', '') : null,
-        model_usdz: currentProduct.model_usdz ? window.location.origin + '/uploads/models/' + currentProduct.model_usdz.replace('assets/models/', '') : null
-      });
-    }
-
-    function resetViewer() {
-      const mv = document.getElementById('productModelViewer');
-      if (mv) {
-        mv.cameraOrbit = '0deg 75deg 105%';
-        mv.fieldOfView = '30deg';
-      }
-    }
-
-    function zoomIn() {
-      const mv = document.getElementById('productModelViewer');
-      if (mv) mv.fieldOfView = Math.max(10, mv.getFieldOfView() - 5) + 'deg';
-    }
-
-    function zoomOut() {
-      const mv = document.getElementById('productModelViewer');
-      if (mv) mv.fieldOfView = Math.min(90, mv.getFieldOfView() + 5) + 'deg';
-    }
-
-    function toggleFullscreen() {
-      const fs = document.getElementById('fullscreenViewer');
-      const mv = document.getElementById('fullscreenModelViewer');
-      fs.classList.add('active');
-      if (currentProduct.model_glb) {
-        mv.src = '../' + currentProduct.model_glb;
-        if (currentProduct.model_usdz) {
-          mv.setAttribute('ios-src', '../' + currentProduct.model_usdz);
-        }
-      }
-    }
-
-    function closeFullscreen() {
-      document.getElementById('fullscreenViewer').classList.remove('active');
-    }
   </script>
 </body>
 </html>

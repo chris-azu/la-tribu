@@ -1,5 +1,6 @@
 /* ============================================
    LA TRIBU — 3D Viewer & AR Styles
+   Production-ready with states
    ============================================ */
 
 /* ---- Viewer Container ---- */
@@ -59,6 +60,78 @@
   color: var(--texto-sec);
 }
 
+/* ---- Loading Overlay ---- */
+.viewer-loading {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(253, 249, 239, 0.92);
+  z-index: 5;
+  transition: opacity var(--transition-base);
+}
+
+.viewer-loading.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.viewer-loading-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.viewer-spinner {
+  width: 36px;
+  height: 36px;
+  border: 2px solid var(--borde);
+  border-top-color: var(--terracota);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.viewer-loading-text {
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--texto-sec);
+}
+
+/* ---- Error Overlay ---- */
+.viewer-error {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  background: rgba(253, 249, 239, 0.95);
+  z-index: 6;
+  padding: 24px;
+  text-align: center;
+}
+
+.viewer-error-icon {
+  font-size: 2rem;
+  color: var(--terracota);
+}
+
+.viewer-error-message {
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  color: var(--texto-sec);
+  line-height: 1.6;
+}
+
 /* ---- AR Button (model-viewer built-in) ---- */
 .viewer-3d-container .ar-button {
   position: absolute;
@@ -86,49 +159,93 @@
   background: var(--terracota-osc);
 }
 
-/* ---- Loading Spinner ---- */
-.viewer-loading {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(253, 249, 239, 0.8);
-  z-index: 5;
-  transition: opacity var(--transition-base);
-}
-
-.viewer-loading.hidden {
-  opacity: 0;
-  pointer-events: none;
-}
-
-.viewer-spinner {
-  width: 32px;
-  height: 32px;
-  border: 2px solid var(--borde);
-  border-top-color: var(--terracota);
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-/* ---- AR Status Message ---- */
+/* ---- AR Status Messages ---- */
 .ar-status {
   text-align: center;
-  padding: 16px 20px;
-  font-size: 0.8rem;
+  padding: 14px 20px;
+  font-size: 0.78rem;
   color: var(--texto-sec);
   background: var(--crema-sec);
   border: 1px solid var(--borde);
   margin-top: 12px;
+  line-height: 1.6;
 }
 
-.ar-status.error {
+.ar-status--error {
   color: var(--terracota);
+  background: #fdf5f0;
+}
+
+.ar-status--opening {
+  color: var(--dorado);
+}
+
+.ar-status--info {
+  color: var(--texto-sec);
+}
+
+/* ---- AR Instructions ---- */
+.ar-instructions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background: var(--crema-sec);
+  border-left: 3px solid var(--terracota);
+  font-size: 0.75rem;
+  color: var(--texto-sec);
+  line-height: 1.5;
+  margin-bottom: 16px;
+}
+
+/* ---- No Model Notice ---- */
+.no-model-notice {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 18px;
+  background: var(--crema-sec);
+  border: 1px solid var(--borde);
+  font-size: 0.78rem;
+  color: var(--texto-sec);
+  line-height: 1.5;
+}
+
+.no-model-notice i {
+  color: var(--dorado);
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+/* ---- 3D Controls (floating) ---- */
+.ar-controls {
+  position: fixed;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 100;
+}
+
+.ar-control-btn {
+  width: 48px;
+  height: 48px;
+  background: var(--crema);
+  border: 1px solid var(--borde);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  font-size: 1rem;
+  color: var(--negro);
+}
+
+.ar-control-btn:hover {
+  background: var(--crema-sec);
+  border-color: var(--negro);
 }
 
 /* ---- Fullscreen viewer ---- */
@@ -155,6 +272,8 @@
   justify-content: space-between;
   padding: 16px 20px;
   border-bottom: 1px solid var(--borde);
+  background: var(--crema);
+  z-index: 1;
 }
 
 .viewer-fullscreen-title {
@@ -173,4 +292,11 @@
 .viewer-fullscreen model-viewer {
   flex: 1;
   width: 100%;
+}
+
+/* ---- Desktop adjustments ---- */
+@media (min-width: 1024px) {
+  .ar-controls {
+    right: calc(var(--sidebar-w) + 20px);
+  }
 }

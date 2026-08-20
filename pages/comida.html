@@ -135,22 +135,30 @@
           ? PRODUCTS
           : PRODUCTS.filter(p => p.category === filter);
 
-        grid.innerHTML = products.map(p => `
-          <div class="product-card fade-in visible" data-category="${p.category}">
-            <img class="product-card-image" src="../${p.image}" alt="${p.name}" loading="lazy">
-            <div class="product-card-body">
-              <h3 class="product-card-name">${p.name}</h3>
-              <p class="product-card-desc">${p.short_description}</p>
-              <div class="product-card-footer">
-                <span class="product-card-price">$${p.price.toFixed(2)} USD</span>
-                <div style="display:flex;gap:8px;flex-wrap:wrap;">
-                  ${p.model_glb ? `<button class="product-card-btn" onclick="window.location.href='producto.html?id=${p.id}'">Ver en 3D</button>` : ''}
-                  <button class="product-card-btn" onclick="sendWhatsApp('${p.name}', ${p.price})">Pedir</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        `).join('');
+        grid.innerHTML = products.map(function(p) {
+          var has3D = !!p.model_glb;
+          var hasAR = has3D && ARService.isAvailable(p);
+
+          return '<div class="product-card fade-in visible" data-category="' + p.category + '">' +
+            '<img class="product-card-image" src="../' + p.image + '" alt="' + p.name + '" loading="lazy">' +
+            '<div class="product-card-body">' +
+              '<h3 class="product-card-name">' + p.name + '</h3>' +
+              '<p class="product-card-desc">' + p.short_description + '</p>' +
+              '<div class="product-card-footer">' +
+                '<span class="product-card-price">$' + p.price.toFixed(2) + ' USD</span>' +
+                '<div style="display:flex;gap:8px;flex-wrap:wrap;">' +
+                  (has3D
+                    ? '<a href="producto.html?id=' + p.id + '" class="product-card-btn"><i class="fa-solid fa-cube"></i> Ver en 3D</a>'
+                    : '') +
+                  (hasAR
+                    ? '<a href="producto.html?id=' + p.id + '" class="product-card-btn"><i class="fa-solid fa-vr-cardboard"></i> AR</a>'
+                    : '') +
+                  '<button class="product-card-btn" onclick="sendWhatsApp(\'' + p.name + '\', ' + p.price + ')">Pedir</button>' +
+                '</div>' +
+              '</div>' +
+            '</div>' +
+          '</div>';
+        }).join('');
       }
 
       filters.forEach(btn => {

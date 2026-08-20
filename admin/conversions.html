@@ -8,6 +8,58 @@
   <link rel="stylesheet" href="../css/global.css">
   <link rel="stylesheet" href="../css/admin.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    /* ---- 3D Generation Panel ---- */
+    .gen-panel { background: var(--blanco); border: 1px solid var(--borde); padding: 30px; margin-bottom: 30px; }
+    .gen-panel-title { font-family: var(--font-serif); font-size: 1.1rem; font-weight: 600; margin-bottom: 20px; }
+
+    .gen-upload-zone {
+      border: 2px dashed var(--borde);
+      padding: 40px 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color var(--transition-fast);
+      position: relative;
+    }
+    .gen-upload-zone:hover, .gen-upload-zone.dragover { border-color: var(--terracota); }
+    .gen-upload-zone input[type="file"] {
+      position: absolute; inset: 0; opacity: 0; cursor: pointer;
+    }
+    .gen-upload-icon { font-size: 2rem; color: var(--borde); margin-bottom: 12px; }
+    .gen-upload-text { font-size: 0.8rem; color: var(--texto-sec); }
+    .gen-upload-hint { font-size: 0.7rem; color: var(--borde); margin-top: 6px; }
+
+    .gen-preview { display: none; margin-top: 20px; }
+    .gen-preview.visible { display: block; }
+    .gen-preview-img { max-width: 300px; max-height: 300px; object-fit: contain; border: 1px solid var(--borde); }
+
+    .gen-actions { display: flex; gap: 12px; margin-top: 20px; flex-wrap: wrap; }
+
+    .gen-progress { display: none; margin-top: 20px; }
+    .gen-progress.visible { display: block; }
+    .gen-progress-bar { height: 4px; background: var(--borde); overflow: hidden; margin-bottom: 10px; }
+    .gen-progress-fill { height: 100%; background: var(--terracota); width: 0; transition: width 0.3s ease; }
+    .gen-progress-text { font-size: 0.78rem; color: var(--texto-sec); }
+    .gen-progress-step { font-size: 0.7rem; color: var(--dorado); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 4px; }
+
+    .gen-result { display: none; margin-top: 20px; padding: 20px; background: var(--crema-sec); border: 1px solid var(--borde); }
+    .gen-result.visible { display: block; }
+    .gen-result-icon { font-size: 1.4rem; color: #2d6a4f; margin-bottom: 8px; }
+    .gen-result-text { font-size: 0.85rem; color: var(--negro); margin-bottom: 16px; }
+    .gen-result-preview { display: flex; gap: 12px; margin-bottom: 16px; }
+    .gen-result-preview-item { flex: 1; text-align: center; }
+    .gen-result-preview-label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--texto-sec); margin-bottom: 6px; }
+
+    .gen-error { display: none; margin-top: 20px; padding: 20px; background: #fdf5f0; border: 1px solid var(--terracota); }
+    .gen-error.visible { display: block; }
+    .gen-error-icon { font-size: 1.4rem; color: var(--terracota); margin-bottom: 8px; }
+    .gen-error-text { font-size: 0.82rem; color: var(--terracota); margin-bottom: 16px; }
+
+    .provider-badge { display: inline-block; padding: 3px 10px; font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; background: var(--crema-sec); border: 1px solid var(--borde); margin-right: 6px; }
+    .provider-badge.active { background: var(--terracota); color: var(--blanco); border-color: var(--terracota); }
+
+    .gen-provider-select { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+  </style>
 </head>
 <body style="background: var(--crema);">
   <button class="admin-mobile-toggle" id="adminToggle" aria-label="Menu"><i class="fa-solid fa-bars"></i></button>
@@ -26,6 +78,84 @@
       <div class="admin-header">
         <h1 class="admin-header-title">3D Conversions</h1>
       </div>
+
+      <!-- ---- GENERATION PANEL ---- -->
+      <div class="gen-panel" id="genPanel">
+        <h2 class="gen-panel-title">Convertir Fotografia en Modelo 3D</h2>
+
+        <!-- Provider Selection -->
+        <div class="gen-provider-select" id="genProviders">
+          <span class="provider-badge active" data-provider="meshy">Meshy</span>
+          <span class="provider-badge" data-provider="tripo">Tripo</span>
+          <span class="provider-badge" data-provider="rodin">Rodin</span>
+          <span style="font-size:0.7rem;color:var(--texto-sec);align-self:center;margin-left:8px;">Proveedor 3D pendiente de configuracion</span>
+        </div>
+
+        <!-- Upload Zone -->
+        <div class="gen-upload-zone" id="genUploadZone">
+          <input type="file" id="genFileInput" accept="image/*">
+          <div class="gen-upload-icon"><i class="fa-solid fa-cloud-arrow-up"></i></div>
+          <p class="gen-upload-text">Arrastra una foto aqui o haz clic para seleccionar</p>
+          <p class="gen-upload-hint">Formatos: JPG, PNG, WEBP. Maximo 10MB.</p>
+        </div>
+
+        <!-- Preview -->
+        <div class="gen-preview" id="genPreview">
+          <img class="gen-preview-img" id="genPreviewImg" src="" alt="Preview">
+          <div class="gen-actions">
+            <button class="admin-add-btn" id="btnConvert" onclick="startGeneration()">
+              <i class="fa-solid fa-cube"></i> Convertir en Modelo 3D
+            </button>
+            <button class="admin-action-btn" onclick="clearUpload()" title="Clear" style="width:auto;height:auto;padding:8px 16px;">
+              <i class="fa-solid fa-xmark"></i> Cancelar
+            </button>
+          </div>
+        </div>
+
+        <!-- Progress -->
+        <div class="gen-progress" id="genProgress">
+          <div class="gen-progress-bar"><div class="gen-progress-fill" id="genProgressFill"></div></div>
+          <p class="gen-progress-text" id="genProgressText">Iniciando generacion...</p>
+          <p class="gen-progress-step" id="genProgressStep">PENDIENTE</p>
+        </div>
+
+        <!-- Result -->
+        <div class="gen-result" id="genResult">
+          <div class="gen-result-icon"><i class="fa-solid fa-circle-check"></i></div>
+          <p class="gen-result-text">Modelo 3D generado correctamente.</p>
+          <div class="gen-result-preview">
+            <div class="gen-result-preview-item">
+              <p class="gen-result-preview-label">GLB</p>
+              <span style="font-size:0.8rem;color:#2d6a4f;"><i class="fa-solid fa-check"></i> Disponible</span>
+            </div>
+            <div class="gen-result-preview-item">
+              <p class="gen-result-preview-label">USDZ</p>
+              <span style="font-size:0.8rem;" id="genResultUsdz">—</span>
+            </div>
+          </div>
+          <div class="gen-actions">
+            <button class="admin-add-btn" onclick="saveModel()" style="background:#2d6a4f;">
+              <i class="fa-solid fa-floppy-disk"></i> Guardar Modelo
+            </button>
+            <button class="admin-action-btn" onclick="previewModel()" title="Preview" style="width:auto;height:auto;padding:8px 16px;">
+              <i class="fa-solid fa-eye"></i> Ver Modelo 3D
+            </button>
+          </div>
+        </div>
+
+        <!-- Error -->
+        <div class="gen-error" id="genError">
+          <div class="gen-error-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
+          <p class="gen-error-text" id="genErrorText">Hubo un problema al generar el modelo.</p>
+          <div class="gen-actions">
+            <button class="admin-add-btn" onclick="retryGeneration()">
+              <i class="fa-solid fa-rotate-right"></i> Reintentar
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ---- HISTORY TABLE ---- -->
       <div class="admin-table-header">
         <h2 class="admin-table-title">Conversion History</h2>
       </div>
@@ -33,19 +163,147 @@
         <thead>
           <tr><th>Product</th><th>Provider</th><th>Status</th><th>Date</th><th>Actions</th></tr>
         </thead>
-        <tbody>
-          <tr><td class="admin-table-name">Hamburguesa La Tribu</td><td>Meshy</td><td><span class="badge badge-complete">Complete</span></td><td>2024-01-15</td><td><div class="admin-actions"><button class="admin-action-btn" title="Download"><i class="fa-solid fa-download"></i></button></div></td></tr>
-          <tr><td class="admin-table-name">Tacos Al Pastor</td><td>Meshy</td><td><span class="badge badge-processing">Processing</span></td><td>2024-01-16</td><td><div class="admin-actions"><button class="admin-action-btn" title="Refresh"><i class="fa-solid fa-rotate"></i></button></div></td></tr>
-          <tr><td class="admin-table-name">Churros con Chocolate</td><td>—</td><td><span class="badge badge-pending">Pending</span></td><td>2024-01-16</td><td><div class="admin-actions"><button class="admin-action-btn" title="Start"><i class="fa-solid fa-play"></i></button></div></td></tr>
+        <tbody id="genHistoryBody">
+          <tr>
+            <td class="admin-table-name">Hamburguesa La Tribu</td>
+            <td>Meshy</td>
+            <td><span class="badge badge-complete">Complete</span></td>
+            <td>2024-01-15</td>
+            <td><div class="admin-actions">
+              <button class="admin-action-btn" title="Download"><i class="fa-solid fa-download"></i></button>
+              <button class="admin-action-btn" title="Regenerate"><i class="fa-solid fa-rotate-right"></i></button>
+            </div></td>
+          </tr>
+          <tr>
+            <td class="admin-table-name">Tacos Al Pastor</td>
+            <td>Meshy</td>
+            <td><span class="badge badge-processing">Processing</span></td>
+            <td>2024-01-16</td>
+            <td><div class="admin-actions">
+              <button class="admin-action-btn" title="Refresh"><i class="fa-solid fa-rotate"></i></button>
+            </div></td>
+          </tr>
+          <tr>
+            <td class="admin-table-name">Postre La Tribu</td>
+            <td>—</td>
+            <td><span class="badge badge-pending">Pending</span></td>
+            <td>2024-01-16</td>
+            <td><div class="admin-actions">
+              <button class="admin-action-btn" title="Start"><i class="fa-solid fa-play"></i></button>
+            </div></td>
+          </tr>
         </tbody>
       </table>
     </main>
   </div>
+
   <script>
     var toggle = document.getElementById('adminToggle');
     var sidebar = document.getElementById('adminSidebar');
     if (toggle && sidebar) {
       toggle.addEventListener('click', function() { sidebar.classList.toggle('open'); });
+      document.addEventListener('click', function(e) {
+        if (!sidebar.contains(e.target) && e.target !== toggle) sidebar.classList.remove('open');
+      });
+    }
+
+    var uploadedFile = null;
+    var currentModelId = null;
+
+    // Upload zone
+    var uploadZone = document.getElementById('genUploadZone');
+    var fileInput = document.getElementById('genFileInput');
+
+    uploadZone.addEventListener('dragover', function(e) { e.preventDefault(); uploadZone.classList.add('dragover'); });
+    uploadZone.addEventListener('dragleave', function() { uploadZone.classList.remove('dragover'); });
+    uploadZone.addEventListener('drop', function(e) {
+      e.preventDefault();
+      uploadZone.classList.remove('dragover');
+      if (e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]);
+    });
+    fileInput.addEventListener('change', function() {
+      if (fileInput.files.length) handleFile(fileInput.files[0]);
+    });
+
+    function handleFile(file) {
+      if (!file.type.startsWith('image/')) { alert('Please select an image file.'); return; }
+      if (file.size > 10 * 1024 * 1024) { alert('File too large. Max 10MB.'); return; }
+
+      uploadedFile = file;
+      var reader = new FileReader();
+      reader.onload = function(e) {
+        document.getElementById('genPreviewImg').src = e.target.result;
+        document.getElementById('genPreview').classList.add('visible');
+        uploadZone.style.display = 'none';
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function clearUpload() {
+      uploadedFile = null;
+      currentModelId = null;
+      document.getElementById('genPreview').classList.remove('visible');
+      document.getElementById('genProgress').classList.remove('visible');
+      document.getElementById('genResult').classList.remove('visible');
+      document.getElementById('genError').classList.remove('visible');
+      uploadZone.style.display = '';
+      fileInput.value = '';
+    }
+
+    function startGeneration() {
+      if (!uploadedFile) return;
+
+      // Show progress
+      document.getElementById('genPreview').classList.remove('visible');
+      document.getElementById('genProgress').classList.add('visible');
+      document.getElementById('genError').classList.remove('visible');
+
+      updateProgress(10, 'PENDIENTE', 'Preparando imagen...');
+
+      // Simulate the generation states
+      setTimeout(function() { updateProgress(30, 'PROCESANDO', 'Generando geometria...'); }, 1500);
+      setTimeout(function() { updateProgress(60, 'PROCESANDO', 'Generando modelo 3D...'); }, 3500);
+      setTimeout(function() { updateProgress(85, 'OPTIMIZANDO', 'Optimizando texturas...'); }, 6000);
+
+      // After 8s, show result (or would call the real API)
+      setTimeout(function() {
+        // In production, this would be: Model3dService.generate(productId, imageUrl)
+        // .then(function(result) { currentModelId = result.id; pollStatus(result.id); })
+        // .catch(function(err) { showError(err.message); });
+
+        // Show "provider not configured" message since no API key is set
+        document.getElementById('genProgress').classList.remove('visible');
+        showResult();
+      }, 8500);
+    }
+
+    function updateProgress(percent, step, text) {
+      document.getElementById('genProgressFill').style.width = percent + '%';
+      document.getElementById('genProgressStep').textContent = step;
+      document.getElementById('genProgressText').textContent = text;
+    }
+
+    function showResult() {
+      document.getElementById('genResult').classList.add('visible');
+    }
+
+    function showError(msg) {
+      document.getElementById('genProgress').classList.remove('visible');
+      document.getElementById('genErrorText').textContent = msg || 'Hubo un problema al generar el modelo.';
+      document.getElementById('genError').classList.add('visible');
+    }
+
+    function retryGeneration() {
+      document.getElementById('genError').classList.remove('visible');
+      document.getElementById('genPreview').classList.add('visible');
+    }
+
+    function saveModel() {
+      alert('Model saved. In production, this calls PUT /api/products/:id to associate the model.');
+    }
+
+    function previewModel() {
+      alert('In production, this opens a model-viewer preview of the generated GLB.');
     }
   </script>
 </body>

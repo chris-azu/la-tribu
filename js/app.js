@@ -1,5 +1,6 @@
 // ============================================
 // LA TRIBU — App Init
+// Conditional 3D/AR buttons based on model data
 // ============================================
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -7,8 +8,11 @@ document.addEventListener('DOMContentLoaded', function() {
   // Render featured products on home
   var featuredGrid = document.getElementById('featuredProducts');
   if (featuredGrid && typeof PRODUCTS !== 'undefined') {
-    var featured = PRODUCTS.filter(function(p) { return p.featured; });
+    var featured = PRODUCTS.filter(function(p) { return p.featured && !p.deleted_at; });
     featuredGrid.innerHTML = featured.map(function(p) {
+      var has3D = !!p.model_glb;
+      var hasAR = has3D && typeof ARService !== 'undefined' && ARService.isAvailable(p);
+
       return '<div class="product-card">' +
         '<img class="product-card-image" src="' + p.image + '" alt="' + p.name + '" loading="lazy">' +
         '<div class="product-card-body">' +
@@ -17,7 +21,12 @@ document.addEventListener('DOMContentLoaded', function() {
           '<div class="product-card-footer">' +
             '<span class="product-card-price">$' + p.price.toFixed(2) + ' USD</span>' +
             '<div style="display:flex;gap:8px;flex-wrap:wrap;">' +
-              (p.model_glb ? '<button class="product-card-btn" onclick="window.location.href=\'pages/producto.html?id=' + p.id + '\'">Ver en 3D</button>' : '') +
+              (has3D
+                ? '<a href="pages/producto.html?id=' + p.id + '" class="product-card-btn"><i class="fa-solid fa-cube"></i> Ver en 3D</a>'
+                : '') +
+              (hasAR
+                ? '<a href="pages/producto.html?id=' + p.id + '" class="product-card-btn"><i class="fa-solid fa-vr-cardboard"></i> AR</a>'
+                : '') +
               '<button class="product-card-btn" onclick="sendWhatsApp(\'' + p.name + '\', ' + p.price + ')">Pedir</button>' +
             '</div>' +
           '</div>' +
